@@ -35,9 +35,10 @@
 
                                 <div class="d-flex justify-content-center">
                                     <div class="justify-content-center">
-                                        <img src="../assets/images/logo.png" height="120px" width="120px">
+                                        <a href="../../customer/index.php"><img src="../assets/images/logo.png"
+                                                                                height="120px" width="120px"></a>
                                     </div>
-<!--                                    <h4 class="card-title mb-0 ">LOGIN</h4>-->
+                                    <!--                                    <h4 class="card-title mb-0 ">LOGIN</h4>-->
                                 </div>
                                 <div class="d-block d-sm-flex justify-content-center align-items-center">
                                     <h5 class="card-sub-title mb-2 mb-sm-0">Login to access your dashboard</h5>

@@ -9,7 +9,7 @@ include('connection/Functions.php');
 $operation = new Functions();
 $logged_user = $_SESSION['user'];
 $user_id = $logged_user['user_id'];
-$products = $operation->retrieveMany("SELECT *FROM admarc_products");
+$products = $operation->retrieveMany("SELECT *FROM admarc_products WHERE from_user = '$user_id'");
 
 
 ?>
@@ -26,6 +26,7 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_products");
         <?php include('includes/header.php'); ?>
 
 
+
         <!-- partial -->
         <div class="page-wrapper mdc-toolbar-fixed-adjust">
             <main class="content-wrapper">
@@ -34,7 +35,7 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_products");
 
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                             <div class="mdc-card p-0">
-                                <h6 class="card-title card-padding pb-0 text-center">ADMARC PRODUCTS</h6>
+                                <h6 class="card-title card-padding pb-0 text-center">MY SALES</h6>
 
 
                                 <div class="mdc-layout-grid " style="width: 100%;">
@@ -56,13 +57,13 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_products");
                                                 </button>
                                             </div>
 
-                                            <div id="openModal"
-                                                 class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-2 ">
-                                                <a href="obtain_products.php" class="mdc-button mdc-button--outlined ">
-                                                    Buy Products
-                                                </a>
-
-                                            </div>
+<!--                                            <div id="openModal"-->
+<!--                                                 class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-2 ">-->
+<!--                                                <a href="obtain_products.php" class="mdc-button mdc-button--outlined ">-->
+<!--                                                    Buy Products-->
+<!--                                                </a>-->
+<!---->
+<!--                                            </div>-->
 
                                         </div>
                                     </div>
@@ -73,13 +74,9 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_products");
                                         <thead>
                                         <tr class="bg-light ">
                                             <th class="text-left "><b>Product Name</b></th>
-                                            <th class="text-left "><b>Buying Price (K)</b></th>
                                             <th class="text-left "><b>Selling Price (K)</b></th>
-                                            <th class="text-left "><b>Qty Bought</b></th>
-                                            <th class="text-left "><b>Qty Remaining</b></th>
-                                            <th class="text-left "><b>Sales Start</b></th>
-                                            <th class="text-left "><b>Sales End</b></th>
-                                            <th><b></b></th>
+                                            <th class="text-left "><b>Qty Sold</b></th>
+                                            <th class="text-left "><b>Date Sold</b></th>
 
                                         </tr>
                                         </thead>
@@ -98,16 +95,9 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_products");
                                             echo '<tr>
                                                         <td class="text-left"><img src="../assets/images/products/' . $product['img_url'] . '" height="60px" width="60px"><b>' . $product['product_name'] . '</b> - <small>' . $category['category_name'] . '</small></td>
                                                         <td class="text-left">' . number_format($product['buying_price'], 2) . '</td>
-                                                        <td class="text-left">' . number_format($product['selling_price'], 2) . '</td>
                                                         <td class="text-left ">' . $product['qty_obtained'] . '</td>
-                                                        <td class="text-left ">' . $status . '</td>
-                                                        <td class="text-left ">' . $product['date_start_sale'] . '</td>
-                                                        <td class="text-left ">' . $product['date_end_sale'] . '</td>
-                                                        <td>
-                                                        <a href="manage_admarc_product.php?product=' . $product['product_id'] . '" class="mdc-button mdc-button--outlined ">
-                                                            Manage
-                                                        </a>
-                                                        </td>
+                                                        <td class="text-left ">' . $product['date_created'] . '</td>
+                                                       
                                                     </tr>';
 
                                         }

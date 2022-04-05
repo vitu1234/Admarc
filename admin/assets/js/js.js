@@ -212,6 +212,7 @@ $("#loginForm").on('submit', function (e) {
             //dataType:"json", //expect json value from server
             data: form_data
         }).done(function (dataResult) { //on Ajax success
+            console.log(dataResult)
                 $("#loginBtn").html('Login');
                 var data = JSON.parse(dataResult);
                 if (data.code == 1) {

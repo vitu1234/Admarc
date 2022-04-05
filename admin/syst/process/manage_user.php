@@ -31,8 +31,8 @@ if (isset($_POST['email']) && isset($_POST['fname']) && isset($_POST['lname']) &
         ];
         if ($operation->insertData($table, $data) == 1) {
             //get user id
-            $getUser = $operation->retrieveSingle("SELECT * FROM `users` WHERE email='$email' AND user_role = '$user_role'");
-            $_SESSION['user'] = $getUser;
+//            $getUser = $operation->retrieveSingle("SELECT * FROM `users` WHERE email='$email' AND user_role = '$user_role'");
+//            $_SESSION['user'] = $getUser;
             echo json_encode(array("code" => 1, "msg" => "Success, redirecting"));
         } else {
             echo json_encode(array("code" => 2, "msg" => "An error occured, please try again later"));

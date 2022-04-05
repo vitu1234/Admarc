@@ -1,8 +1,8 @@
 <!-- partial:partials/_sidebar.php -->
 <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
     <div class="mdc-drawer__header">
-        <a  href="index.php" class="brand-logo text-light font-weight-bolder">
-<!--            <img height="100" width="150" src="../assets/images/logo.svg" alt="logo">-->
+        <a href="index.php" class="brand-logo text-light font-weight-bolder">
+            <!--            <img height="100" width="150" src="../assets/images/logo.svg" alt="logo">-->
             ADMARC ADMIN
         </a>
     </div>
@@ -21,56 +21,99 @@
                     </a>
                 </div>
                 <?php
-                    if ($logged_user['user_role'] == 'admin' || $logged_user['user_role'] == 'stock_manager'){
-                        ?>
+                if ($logged_user['user_role'] == 'admin') {
+                    ?>
 
-                        <div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-drawer-link" href="users.php">
-                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                   aria-hidden="true">track_changes</i>
-                                Users
-                            </a>
-                        </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="users.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">track_changes</i>
+                            Users
+                        </a>
+                    </div>
 
-                        <div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-drawer-link" href="branches.php">
-                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                   aria-hidden="true">dashboard</i>
-                                Branches
-                            </a>
-                        </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="branches.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">dashboard</i>
+                            Branches
+                        </a>
+                    </div>
 
-                        <div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-drawer-link" href="admarc_items.php">
-                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                   aria-hidden="true">grid_on</i>
-                                ADMARC products
-                            </a>
-                        </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="admarc_items.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">grid_on</i>
+                            ADMARC products
+                        </a>
+                    </div>
 
-                        <div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-drawer-link" href="admarc_sales.php">
-                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                   aria-hidden="true">pages</i>
-                                ADMARC Sales
-                            </a>
-                        </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="admarc_sales.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">pages</i>
+                            ADMARC Sales
+                        </a>
+                    </div>
+
+                    <!--                agent or supplier-->
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="products.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">grid_on</i>
+                            Products
+                        </a>
+                    </div>
 
 
-                        <?php
-                    }
+                    <?php
+                } elseif ($logged_user['user_role'] == 'stock_manager') {
+                    ?>
+
+
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="admarc_items.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">grid_on</i>
+                            ADMARC products
+                        </a>
+                    </div>
+
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="admarc_sales.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">pages</i>
+                            ADMARC Sales
+                        </a>
+                    </div>
+
+                    <?php
+                } elseif ($logged_user['user_role'] == 'agent' || $logged_user['user_role'] == 'supplier') {
+
+
+                    ?>
+
+
+                    <!--                agent or supplier-->
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="products.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">grid_on</i>
+                            Products
+                        </a>
+                    </div>
+
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="my_sales.php">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                               aria-hidden="true">pages</i>
+                            My Sales
+                        </a>
+                    </div>
+
+                    <?php
+                }
                 ?>
-
-
-
-                <!--                agent or supplier-->
-                <div class="mdc-list-item mdc-drawer-item">
-                    <a class="mdc-drawer-link" href="products.php">
-                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                           aria-hidden="true">grid_on</i>
-                        Products
-                    </a>
-                </div>
 
                 <!--
                                 <div class="mdc-list-item mdc-drawer-item">

@@ -4,6 +4,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 }
+
 $logged_user = $_SESSION['user'];
 //print_r($_SESSION);
 ?>
@@ -40,7 +41,8 @@ $logged_user = $_SESSION['user'];
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom">K1,958,104.00</h5>
                                     <!--                                    <p class="tx-12 text-muted">55% target reached</p>-->
                                     <div class="card-icon-wrapper">
-                                        <i class="material-icons">attach_money</i>
+                                        <small class="text-light">MWK</small>
+<!--                                        <i class="material-icons ">MWK</i>-->
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +66,7 @@ $logged_user = $_SESSION['user'];
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom">10</h5>
                                     <!--                                    <p class="tx-12 text-muted">87% target reached</p>-->
                                     <div class="card-icon-wrapper">
-                                        <i class="material-icons">credit_card</i>
+                                        <i class="material-icons ">credit_card</i>
                                     </div>
                                 </div>
                             </div>
@@ -101,10 +103,9 @@ $logged_user = $_SESSION['user'];
                                     </div>
                                 </div>
                                 <div class="mdc-layout-grid__inner mt-2">
-                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-tablet"></div>
-                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">
+                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-12-tablet">
                                         <div class="table-responsive">
-                                            <table class="table dashboard-table">
+                                            <table class="table dashboard-table" style="width: 100%;">
                                                 <tbody>
                                                 <tr>
                                                     <td>

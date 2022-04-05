@@ -43,6 +43,17 @@ $branches = $operation->retrieveMany("SELECT *FROM branch");
 
                                             <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-10  "
                                                  style="width: 100%;">
+                                                <button type="button"
+                                                        class="mdc-button mdc-button--outlined material-icons mx-2">
+                                                    <div class="mdc-icon-button__ripple"></div>
+                                                    picture_as_pdf
+                                                </button>
+
+                                                <button type="button"
+                                                        class="mdc-button mdc-button--outlined material-icons mx-2 ">
+                                                    <span class="mdi mdi-file-excel"></span>
+
+                                                </button>
                                             </div>
 
                                             <div id="openModal"

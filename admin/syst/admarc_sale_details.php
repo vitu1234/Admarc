@@ -45,13 +45,27 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
                                     <div class="mdc-layout-grid__inner">
                                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12 ">
 
-
                                             <div id="openModal"
                                                  class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-2 ">
                                                 <a href="admarc_sales.php" class="mdc-button mdc-button--outlined ">
                                                     <span class="mdi mdi-arrow-left"></span> Back
                                                 </a>
 
+                                            </div>
+
+                                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-10  "
+                                                 style="width: 100%;">
+                                                <button type="button"
+                                                        class="mdc-button mdc-button--outlined material-icons mx-2">
+                                                    <div class="mdc-icon-button__ripple"></div>
+                                                    picture_as_pdf
+                                                </button>
+
+                                                <button type="button"
+                                                        class="mdc-button mdc-button--outlined material-icons mx-2 ">
+                                                    <span class="mdi mdi-file-excel"></span>
+
+                                                </button>
                                             </div>
 
                                         </div>
