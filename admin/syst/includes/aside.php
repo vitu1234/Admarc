@@ -216,7 +216,7 @@
             </nav>
         </div>
         <div class="profile-actions">
-            <a href="javascript:;">Settings</a>
+            <a href="#" onclick="showUserProfileModal()" >Edit Profile</a>
             <span class="divider"></span>
             <a href="logout.php">Logout</a>
         </div>
@@ -224,3 +224,4 @@
     </div>
 </aside>
 <!-- partial -->
+

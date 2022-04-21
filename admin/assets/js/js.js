@@ -80,7 +80,7 @@ $("#addUserForm").on('submit', function (e) {
     var phone = $("#phone").val();
     var city_name = $("#city_name").val();
 
-    console.log(email + "----" + phone + '--' + fname + "--" + lname + '---' + city_name + '---' + pass1)
+    // console.log(email + "----" + phone + '--' + fname + "--" + lname + '---' + city_name + '---' + pass1)
 
     if (email !== '' && pass1 !== '' && fname !== '' && lname !== '' && phone !== '' && city_name !== '') {
 
@@ -212,7 +212,7 @@ $("#loginForm").on('submit', function (e) {
             //dataType:"json", //expect json value from server
             data: form_data
         }).done(function (dataResult) { //on Ajax success
-            console.log(dataResult)
+                console.log(dataResult)
                 $("#loginBtn").html('Login');
                 var data = JSON.parse(dataResult);
                 if (data.code == 1) {
@@ -577,7 +577,7 @@ $("#addProductCategoryForm").on('submit', function (e) {
     var category_name = $("#category_name").val();
 
 
-    if (category_name !== '' ) {
+    if (category_name !== '') {
         var form_data = new FormData(this); //Creates new FormData object
 
         $("#loginBtn").html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Saving...</span></div></div>');
@@ -600,6 +600,68 @@ $("#addProductCategoryForm").on('submit', function (e) {
                     )
                     setTimeout(function () {
                         window.location = "categories.php";
+                    }, 1000);
+                } else if (data.code == 2) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.msg,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: "Unknown error occurred!",
+                    })
+                }
+            },
+        });
+
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Please fill the required fields!",
+        })
+    }
+    e.preventDefault();
+    e.stopImmediatePropagation();
+});
+
+//update user profile
+$("#changeProfile").on('submit', function (e) {
+
+    var fname = $("#fname").val();
+    var lname = $("#lname").val();
+    var phone = $("#phone").val();
+    var email = $("#email").val();
+
+
+    if (fname !== '' && lname !== '' && phone !== '' && email !== '') {
+        var form_data = new FormData(this); //Creates new FormData object
+
+        $("#loginBtn").html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Saving...</span></div></div>');
+        $.ajax({ //make ajax request to cart_process.php
+            url: 'process/manage_user.php',
+            type: 'post',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (dataResult) { //on Ajax success
+                console.log(dataResult)
+                $("#loginBtn").html('Save');
+                var data = JSON.parse(dataResult);
+                if (data.code == 1) {
+                    Swal.fire(
+                        'Success!',
+                        data.msg,
+                        'success'
+                    )
+                    setTimeout(function () {
+                        // window.location = "products.php";
+                        location.reload();
+
                     }, 1000);
                 } else if (data.code == 2) {
                     Swal.fire({

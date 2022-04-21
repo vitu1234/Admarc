@@ -17,10 +17,14 @@
 <!-- End custom js for this page-->
 <script src="../assets/js/js.js"></script>
 <script src="../assets/datatable/datatables.min.js"></script>
+<script src="../assets/js/popper.min.js"></script>
+
+<script src="../assets/js/popper.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
 
 <script type="application/javascript">
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         //notification variables
         var placementFrom = "top";
         var placementAlign = "right";
@@ -31,7 +35,7 @@
         var table = $('table').DataTable({
             columnDefs: [
                 {bSortable: false, targets: []}
-            ] ,
+            ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aaSorting": [],
             "bLengthChange": false,
@@ -43,8 +47,11 @@
         });
 
 
-
     });
+
+    function showUserProfileModal() {
+        $('#user_profile_modal').modal('toggle')
+    }
 
 </script>
 

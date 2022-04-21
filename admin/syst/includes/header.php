@@ -1,5 +1,6 @@
 <!-- partial:partials/_navbar.html -->
 <?php
+
 $html = '';
 $counter = 0;
 $cart_total = 0;
@@ -65,7 +66,7 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                 <button class="mdc-button mdc-menu-button">
                 <span class="d-flex align-items-center">
                   <span class="figure">
-                    <img src="../assets/images/faces/face1.jpg" alt="user" class="user">
+                    <img src="../assets/images/faces/<?= $logged_user['img_url'] ?>" alt="user" class="user">
                   </span>
                   <span class="user-name"><?= $logged_user['fname'] ?></span>
                 </span>
@@ -77,7 +78,7 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                                 <i class="mdi mdi-account-edit-outline text-primary"></i>
                             </div>
                             <div class="item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="item-subject font-weight-normal">Edit profile</h6>
+                                <a href="#" onclick="showUserProfileModal()" class="item-subject font-weight-normal">Edit profile</a>
                             </div>
                         </li>
                         <li class="mdc-list-item" role="menuitem">
@@ -85,7 +86,7 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                                 <i class="mdi mdi-settings-outline text-primary"></i>
                             </div>
                             <div class="item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="item-subject font-weight-normal">Logout</h6>
+                                <a href="logout.php" class="item-subject font-weight-normal">Logout</a>
                             </div>
                         </li>
                     </ul>
