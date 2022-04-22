@@ -24,7 +24,23 @@ $today = date("Y-m-d");
 $branches = '';
 
 $product_branch = $operation->retrieveSingle("SELECT *FROM admarc_branch_products WHERE product_id = '$product_id'");
+
+
+$all_categories = $operation->retrieveMany("SELECT *FROM product_categories");
+
+$categories = '';
+
+foreach ($all_categories as $all_category) {
+    if ($all_category['category_id'] == $admarc_products['category_id']) {
+        $categories .= '   <li class="mdc-list-item mdc-list-item--selected" data-value="' . $all_category['category_id'] . '">' . $all_category['category_name'] . '</li>';
+    } else {
+        $branches .= '   <li class="mdc-list-item" data-value="' . $all_category['category_id'] . '">' . $all_category['category_name'] . '</li>';
+    }
+}
+
+
 $all_branches = $operation->retrieveMany("SELECT *FROM branch");
+
 $branches = '';
 if (empty($product_branch)) {
     $branches .= ' <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>';
@@ -77,7 +93,7 @@ foreach ($all_branches as $all_branch) {
                                                value="<?= $product_id ?>"/>
                                         <div class="mdc-layout-grid__inner">
 
-                                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">
+                                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
                                                 <div class="mdc-text-field mdc-text-field--outlined">
                                                     <input type="file" class="mdc-text-field__input" id="prod_pic"
                                                            name="prod_pic"
@@ -91,6 +107,25 @@ foreach ($all_branches as $all_branch) {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                                                <div class="mdc-select " style="width: 100%;"
+                                                     data-mdc-auto-init="MDCSelect">
+                                                    <input type="hidden" required name="category_id" id="category_id">
+                                                    <i class="mdc-select__dropdown-icon"></i>
+                                                    <div class="mdc-select__selected-text"></div>
+                                                    <div class="mdc-select__menu mdc-menu-surface demo-width-class">
+                                                        <ul class="mdc-list">
+
+                                                            <?= $categories ?>
+
+                                                        </ul>
+                                                    </div>
+                                                    <span class="mdc-floating-label">Pick a category</span>
+                                                    <div class="mdc-line-ripple"></div>
+                                                </div>
+                                            </div>
+
 
                                             <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
                                                 <div class="mdc-select " style="width: 100%;"
