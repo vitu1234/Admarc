@@ -7,21 +7,32 @@ if (!isset($_SESSION['user'])) {
 include('connection/Functions.php');
 $operation = new Functions();
 $logged_user = $_SESSION['user'];
+//echo "<pre>";
 //print_r($_SESSION);
-$year = date('Y');
-$all_users = $operation->countAll('SELECT *FROM users');
-$all_sales_by_year = $operation->retrieveSingle("SELECT SUM(multilplied) AS total FROM (SELECT (qty*prod_total) AS multilplied FROM `admarc_sale_details` WHERE YEAR(date_created) = '$year') S; ");
+//echo "</pre>";
+$user_role = $_SESSION['user']['user_role'];
 
-$product_categories = $operation->retrieveMany("SELECT 
+$year = date('Y');
+$html = '';
+
+
+$months = array();
+$record_count = array();
+
+if ($user_role == 'admin' || $user_role == 'stock_manager') {
+    $all_users = $operation->countAll('SELECT *FROM users');
+    $all_sales_by_year = $operation->retrieveSingle("SELECT SUM(multilplied) AS total FROM (SELECT (qty*prod_total) AS multilplied FROM `admarc_sale_details` WHERE YEAR(date_created) = '$year') S; ");
+
+    $product_categories = $operation->retrieveMany("SELECT 
 	product_categories.category_id,category_name, COUNT(admarc_products.product_id) AS products
 FROM `admarc_products` 
 LEFT JOIN product_categories 
 ON admarc_products.category_id = product_categories.category_id 
 GROUP BY product_categories.category_name,category_name ORDER BY admarc_products.category_id LIMIT 5; ");
-$count_admarc_products = $operation->countAll("SELECT * FROM `admarc_products` WHERE YEAR(date_created) = '$year'");
-$count_admarc_sales = $operation->countAll("SELECT * FROM `admarc_sales` WHERE YEAR(date_created) = '$year'");
+    $count_admarc_products = $operation->countAll("SELECT * FROM `admarc_products` WHERE YEAR(date_created) = '$year'");
+    $count_admarc_sales = $operation->countAll("SELECT * FROM `admarc_sales` WHERE YEAR(date_created) = '$year'");
 
-$yearSales = $operation->retrieveMany('SELECT 
+    $yearSales = $operation->retrieveMany('SELECT 
                                 CASE 
                                     WHEN (MONTH(date_created) = 1) 
                                         THEN "Jan" 
@@ -53,36 +64,42 @@ $yearSales = $operation->retrieveMany('SELECT
                                 WHERE YEAR(date_created)="' . $year . '" 
                                 GROUP BY MONTH(date_created),month_name;');
 
-$months = array();
-$record_count = array();
-foreach ($yearSales as $sale) {
-    array_push($months, $sale['month_name']);
-    array_push($record_count, $sale['record_count']);
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-<?php include('includes/css.php'); ?>
-<body>
-<script src="../assets/js/preloader.js"></script>
-<div class="body-wrapper">
-    <?php include('includes/aside.php'); ?>
-    <div class="main-wrapper mdc-drawer-app-content">
+    foreach ($yearSales as $sale) {
+        array_push($months, $sale['month_name']);
+        array_push($record_count, $sale['record_count']);
+    }
 
-        <?php
 
-        include('includes/header.php');
+    $table = '';
+    $i = 1;
+    foreach ($product_categories as $product_category) {
+        $table .= '
+        <tr>
+            <td>
+            <th>#' . $i . ' </th>
+            </td>
+            <td>
+                ' . $product_category['category_name'] . '
+            </td>
+            <td>
+                ' . $product_category['products'] . '
+            </td>
+            <!--                                                    <td class=" font-weight-medium"> 39%</td>-->
+        </tr>.';
 
-        ?>
-        <div class="page-wrapper mdc-toolbar-fixed-adjust">
-            <main class="content-wrapper">
+        $i++;
+    }
+
+
+    $html = '
+        <main class="content-wrapper">
                 <div class="mdc-layout-grid">
                     <div class="mdc-layout-grid__inner">
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
                             <div class="mdc-card info-card info-card--success">
                                 <div class="card-inner">
                                     <h5 class="card-title"><small><?= $year ?> </small>Products</h5>
-                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom"><?= $count_admarc_products ?></h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">' . $count_admarc_products . '</h5>
                                     <!--                                    <p class="tx-12 text-muted">48% target reached</p>-->
                                     <div class="card-icon-wrapper">
                                         <i class="material-icons">dvr</i>
@@ -93,9 +110,9 @@ foreach ($yearSales as $sale) {
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
                             <div class="mdc-card info-card info-card--danger">
                                 <div class="card-inner">
-                                    <h5 class="card-title"><small><?= $year ?></small> Annual Sales </h5>
+                                    <h5 class="card-title"><small>' . $year . '</small> Annual Sales </h5>
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom">
-                                        K<?= number_format($all_sales_by_year['total'], 2) ?></h5>
+                                        K<?= number_format($all_sales_by_year[\'total\'], 2) ?></h5>
                                     <!--                                    <p class="tx-12 text-muted">55% target reached</p>-->
                                     <div class="card-icon-wrapper">
                                         <small class="text-light">MWK</small>
@@ -107,7 +124,7 @@ foreach ($yearSales as $sale) {
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
                             <div class="mdc-card info-card info-card--primary">
                                 <div class="card-inner">
-                                    <h5 class="card-title"><small><?= $year ?> Annual Sales </small></h5>
+                                    <h5 class="card-title"><small>' . $year . ' Annual Sales </small></h5>
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom"><?= $count_admarc_sales ?></h5>
                                     <!--                                    <p class="tx-12 text-muted">87% target reached</p>-->
                                     <div class="card-icon-wrapper">
@@ -120,7 +137,7 @@ foreach ($yearSales as $sale) {
                             <div class="mdc-card info-card info-card--info">
                                 <div class="card-inner">
                                     <h5 class="card-title">All Users</h5>
-                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom"><?= $all_users ?></h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">' . $all_users . '</h5>
                                     <!--                                    <p class="tx-12 text-muted">87% target reached</p>-->
                                     <div class="card-icon-wrapper">
                                         <i class="material-icons ">credit_card</i>
@@ -167,26 +184,8 @@ foreach ($yearSales as $sale) {
                                         <div class="table-responsive">
                                             <table class="table dashboard-table" style="width: 100%;">
                                                 <tbody>
-                                                <?php
-                                                $i = 1;
-                                                foreach ($product_categories as $product_category) {
-                                                    ?>
-                                                    <tr>
-                                                        <td>
-                                                        <th>#<?= $i ?></th>
-                                                        </td>
-                                                        <td>
-                                                            <?= $product_category['category_name'] ?>
-                                                        </td>
-                                                        <td>
-                                                            <?= $product_category['products'] ?>
-                                                        </td>
-                                                        <!--                                                    <td class=" font-weight-medium"> 39%</td>-->
-                                                    </tr>
-                                                    <?php
-                                                    $i++;
-                                                }
-                                                ?>
+                                              
+                                                ' . $table . '
 
                                                 </tbody>
                                             </table>
@@ -202,7 +201,7 @@ foreach ($yearSales as $sale) {
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                             <div class="mdc-card">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-2 mb-sm-0">Sales Overview in year <?=$year?></h4>
+                                    <h4 class="card-title mb-2 mb-sm-0">Sales Overview in year <?= $year ?></h4>
                                     <div class="d-flex justtify-content-between align-items-center">
                                         <!--                                        <p class="d-none d-sm-block text-muted tx-12 mb-0 mr-2">Goal reached</p>-->
                                         <!--                                        <i class="material-icons options-icon">more_vert</i>-->
@@ -234,6 +233,28 @@ foreach ($yearSales as $sale) {
                     </div>
                 </div>
             </main>
+    ';
+} else {
+    $html = '<h3 class="alert alert-warning py-3 text-center">Dashboard under construction!</h3>';
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<?php include('includes/css.php'); ?>
+<body>
+<script src="../assets/js/preloader.js"></script>
+<div class="body-wrapper">
+    <?php include('includes/aside.php'); ?>
+    <div class="main-wrapper mdc-drawer-app-content">
+
+        <?php
+
+        include('includes/header.php');
+
+        ?>
+        <div class="page-wrapper mdc-toolbar-fixed-adjust">
+            <?= $html ?>
             <?php include("includes/footer.php"); ?>
         </div>
     </div>

@@ -1,13 +1,20 @@
 <!-- partial:partials/_navbar.html -->
 <?php
 
-$html = '';
+$html_ = '';
 $counter = 0;
 $cart_total = 0;
-if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
 
-    $html = '';
-    $html .= '
+
+$user_role = $_SESSION['user']['user_role'];
+
+$cart_html = '';
+
+if ($user_role == 'admin' || $user_role == 'stock_manager') {
+    if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
+
+        $html_ = '';
+        $html_ .= '
         <table style="width: 100%" class="table ">
             <tbody>
                 <tr>
@@ -16,14 +23,14 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                     <th style="text-align: left;width: 20%; " ><small>Quantity</small></th>
                     <th style="text-align: left; width: 10%;"></th>
             ';
-    foreach ($_SESSION['cart'] as $item) {
+        foreach ($_SESSION['cart'] as $item) {
 
-        $prod_id = $item['prod_id'];
-        $product_name = $item['product_name'];
+            $prod_id = $item['prod_id'];
+            $product_name = $item['product_name'];
 
-        $qty = $item['qty'];
-        $cart_total += $item['price'];
-        $html .= '
+            $qty = $item['qty'];
+            $cart_total += $item['price'];
+            $html_ .= '
 				<tr>
 				<td style="text-align: left">' . $item["product_name"] . '</td>
 				<td style="text-align: left">' . $item["price"] . '</td>
@@ -35,18 +42,39 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                 </td>
 				</tr>
             ';
-    }
+        }
 
-    $html .= '
+        $html_ .= '
             </tbody>
             </table>
             ';
 
-    $counter = count($_SESSION['cart']);
-} else {
-    $html = '<span class="p-5">No Items in your cart</span>';
+        $counter = count($_SESSION['cart']);
+    } else {
+        $html_ = '<span class="p-5">No Items in your cart</span>';
+
+    }
+    $cart_html .= '
+        <div class="menu-button-container">
+                <button class="mdc-button mdc-menu-button">
+                    <i class="mdi mdi-cart"></i>
+                    <span class="count-indicator">
+                  <span id="cartCounter" class="count">' . $counter . '</span>
+                </span>
+                </button>
+                <div class="mdc-menu mdc-menu-surface" tabindex="-1">
+                    <h6 class="title"><i class="mdi mdi-cart-outline mr-2 tx-16"></i> Cart Items | <a
+                                href="checkout.php"><i class="mdi mdi-paypal-outline mr-2 tx-16"></i> Checkout
+                            Cart >>></a> <small id="cart_total" class="title"><b>Total:</b>
+                            K' . number_format($cart_total, 2) . '</small></h6>
 
 
+                    <div style="width: 500px" class="table-responsive" id="cartItems">
+                        ' . $html_ . '
+                    </div>
+                </div>
+            </div>
+    ';
 }
 
 
@@ -78,7 +106,8 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
                                 <i class="mdi mdi-account-edit-outline text-primary"></i>
                             </div>
                             <div class="item-content d-flex align-items-start flex-column justify-content-center">
-                                <a href="#" onclick="showUserProfileModal()" class="item-subject font-weight-normal">Edit profile</a>
+                                <a href="#" onclick="showUserProfileModal()" class="item-subject font-weight-normal">Edit
+                                    profile</a>
                             </div>
                         </li>
                         <li class="mdc-list-item" role="menuitem">
@@ -143,25 +172,7 @@ if (!empty($_SESSION['cart']) && isset($_SESSION['cart'])) {
 
             </div>
 
-            <div class="menu-button-container">
-                <button class="mdc-button mdc-menu-button">
-                    <i class="mdi mdi-cart"></i>
-                    <span class="count-indicator">
-                  <span id="cartCounter" class="count"><?= $counter ?></span>
-                </span>
-                </button>
-                <div class="mdc-menu mdc-menu-surface" tabindex="-1">
-                    <h6 class="title"><i class="mdi mdi-cart-outline mr-2 tx-16"></i> Cart Items | <a
-                                href="checkout.php"><i class="mdi mdi-paypal-outline mr-2 tx-16"></i> Checkout
-                            Cart >>></a> <small id="cart_total" class="title"><b>Total:</b>
-                            K<?= number_format($cart_total, 2) ?></small></h6>
-
-
-                    <div style="width: 500px" class="table-responsive" id="cartItems">
-                        <?= $html ?>
-                    </div>
-                </div>
-            </div>
+            <?= $cart_html ?>
 
         </div>
     </div>
