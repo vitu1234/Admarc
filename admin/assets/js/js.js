@@ -327,6 +327,7 @@ $("#addProductForm").on('submit', function (e) {
 });
 
 
+
 //add to cart with function
 function addToCart(product_id, product_name, price) {
     var qty = $("#prod_qty" + product_id).val();
@@ -689,13 +690,6 @@ $("#changeProfile").on('submit', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
 });
-
-
-
-
-
-
-
 
 
 //add set customer city

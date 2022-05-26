@@ -224,7 +224,7 @@ foreach ($all_branches as $all_branch) {
                                                 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
                                                     <i class="material-icons mdc-text-field__icon">amount</i>
                                                     <input value="<?= $admarc_products['qty_remaining'] ?>" min="0"
-                                                           autocomplete="off" type="number" required
+                                                           autocomplete="off" type="number" required readonly
                                                            class="mdc-text-field__input "
                                                            name="qty_remaining"
                                                            id="qty_remaining">
@@ -286,7 +286,7 @@ foreach ($all_branches as $all_branch) {
                                             </div>
 
                                             <div class="mt-2 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
-                                                <button id="loginBtn" type="button"
+                                                <button id="loginBtn" type="button" onclick="deleteAdmarcProductPrompt('<?=$product_id?>')"
                                                         class="mdc-button mdc-button--danger w-100">
                                                     DELETE
                                                 </button>
@@ -311,7 +311,66 @@ foreach ($all_branches as $all_branch) {
 <?php include('includes/scripts.php'); ?>
 <script>
 
+    function deleteAdmarcProductPrompt(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Swal.fire(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                // )
+                deleteAdmarcProduct(id)
+            }
+        })
+    }
 
+    function deleteAdmarcProduct(id) {
+        $.ajax({
+            url: "process/manage_product.php",
+            method: "POST",
+            data: {
+                del_admarc_prod_id: id
+            },
+
+            success: function (dataResult) {
+                // alert(data);
+                var data = JSON.parse(dataResult);
+                if (data.code == 1) {
+                    Swal.fire(
+                        'Success!',
+                        data.msg,
+                        'success'
+                    )
+                    setTimeout(function () {
+                        window.location = "manage_admarc_product.php";
+                    }, 1000);
+                } else if (data.code == 2) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.msg,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: "Unknown error occurred!",
+                    })
+                }
+
+
+            }
+        });
+
+    }
 </script>
 </body>
 </html>

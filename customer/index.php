@@ -6,6 +6,7 @@ $products = $operation->retrieveMany(
     "SELECT *
                 FROM admarc_products 
                 WHERE qty_remaining > 0
+                AND selling_price IS NOT NULL
                 LIMIT 8
             ");
 ?>
@@ -226,7 +227,7 @@ if (!empty($categories)) {
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">Strawberry</a></h3>
+                                <h3><a href="#"><?= $product['product_name'] ?></a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
                                         <p class="price">

@@ -132,7 +132,7 @@ $products = $operation->retrieveMany("SELECT *FROM products WHERE user_id = '$us
                                                         <td class="text-left ">' . $status . '</td>
                                                        
                                                         <td>
-                                                        <a href="manage_product.php?user=' . $product['product_id'] . '" class="mdc-button mdc-button--outlined ">
+                                                        <a href="manage_product.php?product=' . $product['product_id'] . '" class="mdc-button mdc-button--outlined ">
                                                             Manage
                                                         </a>
                                                         </td>
