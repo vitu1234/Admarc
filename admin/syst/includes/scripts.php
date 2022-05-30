@@ -34,7 +34,11 @@
 
         var table = $('table').DataTable({
             columnDefs: [
-                {bSortable: false, targets: []}
+                {bSortable: true, targets: []}
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'excel', 'pdf'
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aaSorting": [],

@@ -127,7 +127,11 @@ if (!empty($categories)) {
                                  style="background-image: url(../admin/assets/images/products/<?= $categories[0]['category_img'] ?>);">
                                 <div class="text px-3 py-1">
                                     <h2 class="mb-0"><a
-                                                href="shop.php?category=<?= $categories[0]['category_id'] ?>"><?= $categories[0]['category_name'] ?></a>
+                                                href="shop.php?category=<?= $categories[0]['category_id'] ?>"><?= $categories[0]['category_name'] . ' <small> (' . $operation->countAll("SELECT *
+                FROM admarc_products 
+                WHERE qty_remaining > 0
+                AND selling_price IS NOT NULL AND category_id = '" . $categories[0]['category_id'] . "'
+                LIMIT 8") . ' products)</small>' ?></a>
                                     </h2>
                                 </div>
                             </div>
@@ -135,7 +139,11 @@ if (!empty($categories)) {
                                  style="background-image: url(../admin/assets/images/products/<?= $categories[2]['category_img'] ?>);">
                                 <div class="text px-3 py-1">
                                     <h2 class="mb-0"><a
-                                                href="shop.php?category=<?= $categories[2]['category_id'] ?>"><?= $categories[2]['category_name'] ?></a>
+                                                href="shop.php?category=<?= $categories[2]['category_id'] ?>"><?= $categories[2]['category_name'] . ' <small> (' . $operation->countAll("SELECT *
+                FROM admarc_products 
+                WHERE qty_remaining > 0
+                AND selling_price IS NOT NULL AND category_id = '" . $categories[2]['category_id'] . "'
+                LIMIT 8") . ' products)</small>' ?></a>
                                     </h2>
                                 </div>
                             </div>
@@ -148,7 +156,11 @@ if (!empty($categories)) {
                          style="background-image: url(../admin/assets/images/products/<?= $categories[1]['category_img'] ?>);">
                         <div class="text px-3 py-1">
                             <h2 class="mb-0"><a
-                                        href="shop.php?category=<?= $categories[1]['category_id'] ?>"><?= $categories[1]['category_name'] ?></a>
+                                        href="shop.php?category=<?= $categories[1]['category_id'] ?>"><?= $categories[1]['category_name'] . ' <small> (' . $operation->countAll("SELECT *
+                FROM admarc_products 
+                WHERE qty_remaining > 0
+                AND selling_price IS NOT NULL AND category_id = '" . $categories[1]['category_id'] . "'
+                LIMIT 8") . ' products)</small>' ?></a>
                             </h2>
                         </div>
                     </div>
@@ -156,7 +168,11 @@ if (!empty($categories)) {
                          style="background-image: url(../admin/assets/images/products/<?= $categories[3]['category_img'] ?>);">
                         <div class="text px-3 py-1">
                             <h2 class="mb-0"><a
-                                        href="shop.php?category=<?= $categories[3]['category_id'] ?>"><?= $categories[3]['category_name'] ?></a>
+                                        href="shop.php?category=<?= $categories[3]['category_id'] ?>"><?= $categories[3]['category_name'] . ' <small> (' . $operation->countAll("SELECT *
+                FROM admarc_products 
+                WHERE qty_remaining > 0
+                AND selling_price IS NOT NULL AND category_id = '" . $categories[3]['category_id'] . "'
+                LIMIT 8") . ' products)</small>' ?></a>
                             </h2>
                         </div>
                     </div>

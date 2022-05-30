@@ -3,7 +3,10 @@ include("../connection/Functions.php");
 $operation = new Functions();
 session_start();
 //register
+//echo '<pre>';
 //print_r($_POST);
+//
+//echo '</pre>';
 //die();
 if (isset($_POST['email']) && isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['phone']) && isset($_POST['city_name']) && isset($_POST['pass1']) && !empty($_POST['email']) && !empty($_POST['fname']) && !empty($_POST['lname']) && !empty($_POST['phone']) && !empty($_POST['city_name']) && !empty($_POST['pass1'])) {
     $email = addslashes($_POST['email']);
@@ -102,6 +105,23 @@ if (isset($_POST['email']) && isset($_POST['fname']) && isset($_POST['lname']) &
                 $operation->updateData($table, $data, $where);
             }
         }
+
+        if (isset($_POST['status'])) {
+            if (isset($_POST['account_status']) && !empty($_POST['account_status'])) {
+                $data = [
+                    'account_status' => "1",
+                ];
+                $operation->updateData($table, $data, $where);
+
+            } else {
+
+                $data = [
+                    'account_status' => "0",
+                ];
+                $operation->updateData($table, $data, $where);
+            }
+        }
+
 
         if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['size'] > 1) {
 

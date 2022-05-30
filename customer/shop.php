@@ -67,50 +67,55 @@ if (isset($_GET['category']) && !empty($_GET['category'])) {
             </div>
             <div class="row">
                 <?php
-                foreach ($products as $product) {
-                    ?>
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a href="product-single.php?product=<?= $product['product_id'] ?>" class="img-prod"><img
-                                        style="height: 150px; width: 180px; display: block;
+                if (empty($products)){
+                    echo '<p class="mt-3 alert alert-warning text-center" style="width: 100%;">No products in selected category!</p>';
+                }else{
+                    foreach ($products as $product) {
+                        ?>
+                        <div class="col-md-6 col-lg-3 ftco-animate">
+                            <div class="product">
+                                <a href="product-single.php?product=<?= $product['product_id'] ?>" class="img-prod"><img
+                                            style="height: 150px; width: 180px; display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;" class="img-fluid"
-                                        src="../admin/assets/images/products/<?= $product['img_url'] ?>"
-                                        alt="Product">
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">Strawberry</a></h3>
-                                <div class="d-flex">
-                                    <div class="pricing">
-                                        <p class="price">
-                                            <span>K<?= number_format($product['selling_price'], 2) ?></span></p>
+                                            src="../admin/assets/images/products/<?= $product['img_url'] ?>"
+                                            alt="Product">
+                                    <div class="overlay"></div>
+                                </a>
+                                <div class="text py-3 pb-4 px-3 text-center">
+                                    <h3><a href="#">Strawberry</a></h3>
+                                    <div class="d-flex">
+                                        <div class="pricing">
+                                            <p class="price">
+                                                <span>K<?= number_format($product['selling_price'], 2) ?></span></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="bottom-area d-flex px-3">
-                                    <div class="m-auto d-flex">
-                                        <a href="product-single.php?product=<?= $product['product_id'] ?>"
-                                           class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                            <span><i class="ion-ios-information-circle"></i></span>
-                                        </a>
-                                        <a href="#"
-                                           onclick="addToCart('<?= $product['product_id'] ?>', '<?= $product['product_name'] ?>', '<?= $product['selling_price'] ?>', 'inline')"
-                                           id="btn_cart_add<?= $product['product_id'] ?>"
-                                           class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                            <span><i class="ion-ios-cart"></i></span>
-                                        </a>
-                                        <!--                                            <a href="#" class="heart d-flex justify-content-center align-items-center ">-->
-                                        <!--                                                <span><i class="ion-ios-heart"></i></span>-->
-                                        <!--                                            </a>-->
+                                    <div class="bottom-area d-flex px-3">
+                                        <div class="m-auto d-flex">
+                                            <a href="product-single.php?product=<?= $product['product_id'] ?>"
+                                               class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-information-circle"></i></span>
+                                            </a>
+                                            <a href="#"
+                                               onclick="addToCart('<?= $product['product_id'] ?>', '<?= $product['product_name'] ?>', '<?= $product['selling_price'] ?>', 'inline')"
+                                               id="btn_cart_add<?= $product['product_id'] ?>"
+                                               class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                            <!--                                            <a href="#" class="heart d-flex justify-content-center align-items-center ">-->
+                                            <!--                                                <span><i class="ion-ios-heart"></i></span>-->
+                                            <!--                                            </a>-->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <?php
+                        <?php
+                    }
                 }
+
                 ?>
 
             </div>
