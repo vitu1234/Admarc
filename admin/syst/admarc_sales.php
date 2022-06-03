@@ -72,10 +72,11 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_sales JOIN users ON ad
                                     <table class="table table-hoverable">
                                         <thead>
                                         <tr class="bg-light ">
-                                            <th class="text-left "><b>#ID</b></th>
                                             <th class="text-left "><b>Customer</b></th>
                                             <th class="text-left "><b>Products</b></th>
+                                            <th class="text-left "><b>Type - isApproved?</b></th>
                                             <th class="text-left "><b>Total</b></th>
+
                                             <th><b></b></th>
 
                                         </tr>
@@ -85,12 +86,13 @@ $products = $operation->retrieveMany("SELECT *FROM admarc_sales JOIN users ON ad
                                         foreach ($products as $product) {
 
                                             $sale_id = $product['sale_id'];
+                                            $isApproved = ($product['is_approved'] == 1) ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>';
                                             $salesCount = $operation->countAll("SELECT *FROM admarc_sale_details WHERE sale_id = '$sale_id'");
 
                                             echo '<tr>
-                                                        <td class="text-left">' . $sale_id . '</td>
                                                         <td class="text-left"><b>' . $product['fname'] . ' ' . $product['lname'] . '</b></td>
                                                         <td class="text-left ">' . $salesCount . '</td>
+                                                        <td class="text-left"><b>' . $product['payment_type'] . ' - ' . $isApproved . '</b></td>
                                                         <td class="text-left">' . number_format($product['total'], 2) . '</td>
                                                       
                                                         <td>

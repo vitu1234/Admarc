@@ -20,8 +20,17 @@ $cart_total = 0;
         <div class="row">
             <div class="col-md-12 ftco-animate">
                 <div class="cart-list">
+                    <p style="width: 100%;" id="response">
+                        <?php
 
+                        $error = (isset($_GET['error']) && !empty($_GET['error'])) ? '<span class="text-center text-danger">' . $_GET['error'] . '</span>' : '';
+                        $success = (isset($_GET['success'])  && !empty($_GET['success'])) ? '<span class="text-center text-success">' . $_GET['success'] . '</span>' : '';
+                        echo $error;
+                        echo $success;
+                        ?>
+                    </p>
                     <?php
+
                     if (isset($_SESSION['cart_customer'])) {
                         if (count($_SESSION['cart_customer']) > 0) {
                             ?>

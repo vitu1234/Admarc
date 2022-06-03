@@ -112,7 +112,7 @@ GROUP BY product_categories.category_name,category_name ORDER BY admarc_products
                                 <div class="card-inner">
                                     <h5 class="card-title"><small>' . $year . '</small> Annual Sales </h5>
                                     <h5 class="font-weight-light pb-2 mb-1 border-bottom">
-                                        K<?= number_format($all_sales_by_year[\'total\'], 2) ?></h5>
+                                        K' . number_format($all_sales_by_year['total'], 2) . '</h5>
                                     <!--                                    <p class="tx-12 text-muted">55% target reached</p>-->
                                     <div class="card-icon-wrapper">
                                         <small class="text-light">MWK</small>
@@ -125,7 +125,7 @@ GROUP BY product_categories.category_name,category_name ORDER BY admarc_products
                             <div class="mdc-card info-card info-card--primary">
                                 <div class="card-inner">
                                     <h5 class="card-title"><small>' . $year . ' Annual Sales </small></h5>
-                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom"><?= $count_admarc_sales ?></h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">' . $count_admarc_sales . '</h5>
                                     <!--                                    <p class="tx-12 text-muted">87% target reached</p>-->
                                     <div class="card-icon-wrapper">
                                         <i class="material-icons">trending_up</i>
@@ -148,8 +148,7 @@ GROUP BY product_categories.category_name,category_name ORDER BY admarc_products
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                             <div class="mdc-card">
                                 <div class="d-flex justify-content-between">
-                                    <h4 class="card-title mb-0" style="margin-left: 20%;">Categories to Admarc
-                                        Products </h4>
+                                    <h4 class="card-title mb-0" style="margin-left: 20%;">Categories - Products </h4>
                                     <div>
                                         <!--                                        <i class="material-icons refresh-icon">refresh</i>-->
                                         <!--                                        <i class="material-icons options-icon ml-2">more_vert</i>-->
@@ -183,6 +182,12 @@ GROUP BY product_categories.category_name,category_name ORDER BY admarc_products
                                     <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-9-tablet">
                                         <div class="table-responsive">
                                             <table class="table dashboard-table" style="width: 100%;">
+                                                <tr>
+                                                <th></th>
+                                                <th>#</th>
+                                                <th>Category</th>
+                                                <th>Products</th>
+</tr>
                                                 <tbody>
                                               
                                                 ' . $table . '

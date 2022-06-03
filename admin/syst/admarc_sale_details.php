@@ -75,8 +75,14 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
                                 <div class="mdc-layout-grid " style="width: 100%;">
                                     <div class="mdc-layout-grid__inner">
                                         <!--                                        <h3 class="text-center">Cart Totals</h3>-->
-                                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-10  "
+                                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12  "
                                              style="width: 100%;">
+
+                                            <?php
+                                            $img = ($sale['payment_type'] != 'Cash') ? '<img src="../assets/images/payment/' . $sale['payment_screenshot'] . '" class="rounded-3 m-4" height="200px" width="200px"/><br><br>' : '';
+                                            echo $img;
+                                            ?>
+
 
                                             <table class="table " style="width: 70%; border: 0px solid white;">
                                                 <tr>
@@ -90,6 +96,29 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
                                                 <tr>
                                                     <th width="60%">Payment Type</th>
                                                     <td width="20%"><?= $sale['payment_type'] ?></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="60%">Is Approved?</th>
+                                                    <td width="20%">
+                                                        <?php
+                                                        $isApproved = ($sale['is_approved'] == 1) ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>';
+
+                                                        ?>
+                                                        <?= $isApproved ?>
+                                                        <div class="mdc-switch mdc-switch--checked mt-2 mx-3"
+                                                             data-mdc-auto-init="MDCSwitch">
+                                                            <div class="mdc-switch__track"></div>
+                                                            <div class="mdc-switch__thumb-underlay">
+                                                                <div class="mdc-switch__thumb">
+                                                                    <input type="checkbox" id="is_approved"
+                                                                           name="is_approved"
+                                                                           class="mdc-switch__native-control"
+                                                                           role="switch" <?= ($sale['is_approved'] == 1) ? 'checked' : 'unchecked' ?>>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
@@ -151,6 +180,46 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
 </div>
 
 <?php include('includes/scripts.php'); ?>
+
+<script type="application/javascript">
+    $("input[name='is_approved']").change(
+        function (e) {
+            // your stuffs go here
+            if ($("input[name='is_approved']").is(':checked')) {
+
+                $.ajax({
+                    url: "process/sales_manager.php",
+                    method: "POST",
+                    data: {
+                        is_approved: 1,
+                        id: <?=$sale_id?>
+                    },
+
+                    success: function (data) {
+                        window.location = 'admarc_sale_details.php?sale=<?=$sale_id?>';
+
+                    }
+                });
+
+            } else {
+                $.ajax({
+                    url: "process/sales_manager.php",
+                    method: "POST",
+                    data: {
+                        is_approved: 0,
+                        id: <?=$sale_id?>
+                    },
+
+                    success: function (data) {
+//                    alert(data);
+                        window.location = 'admarc_sale_details.php?sale=<?=$sale_id?>';
+
+                    }
+                });
+
+            }
+        });
+</script>
 
 </body>
 </html>

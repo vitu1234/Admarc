@@ -92,7 +92,7 @@ $("input[name='optradio']").change(function (e) {
 });
 
 //submit checkout form
-$("#checkoutForm").on('submit', function (e) {
+$("#checkoutForm1").on('submit', function (e) {
     var form_data = $(this).serialize();
 
 
@@ -138,6 +138,53 @@ $("#checkoutForm").on('submit', function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
 });
+
+
+$("#checkoutForm").on('submit', function (e) {
+
+    var fname = $("#fname").val();
+    var lname = $("#lname").val();
+    var phone = $("#phone").val();
+    var address = $("#address").val();
+
+
+    if (fname !== '' && lname !== '' && phone !== '' && address !== '') {
+        var form_data = new FormData(this); //Creates new FormData object
+
+        $("#loginBtn").html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Saving...</span></div></div>');
+        $.ajax({ //make ajax request to cart_process.php
+            url: 'process/checkout.php',
+            type: 'post',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (dataResult) { //on Ajax success
+                console.log(dataResult)
+                $("#loginBtn").html('Place an order');
+                var data = JSON.parse(dataResult);
+
+                if (data.code == 1) {
+                    $("#response").html('<span class="text-center alert alert-success" >' + data.msg + '</span>')
+                    setTimeout(function () {
+                        window.location = "shop.php";
+                    }, 1500);
+                } else if (data.code == 2) {
+                    $("#response").html('<span class="text-center alert text-danger">' + data.msg + '</span>')
+                } else {
+                    $("#response").html('<span class="text-center alert alert-danger">Unknown error occured while saving, please try again later!</span>')
+                }
+            },
+        });
+
+    } else {
+        $("#response").html('<span class="text-center alert alert-danger">Fill all fields!</span>')
+
+    }
+    e.preventDefault();
+    e.stopImmediatePropagation();
+});
+
 
 
 
