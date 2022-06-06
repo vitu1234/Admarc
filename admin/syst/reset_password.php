@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['email_reset'])) {
+    header('Location: forget.php?error=Enter email first');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +48,7 @@
                                     <!--                                    <h4 class="card-title mb-0 ">LOGIN</h4>-->
                                 </div>
                                 <div class="d-block d-sm-flex justify-content-center align-items-center">
-                                    <h5 class="card-sub-title mb-2 mb-sm-0">Login to access your dashboard</h5>
+                                    <h5 class="card-sub-title mb-2 mb-sm-0">Create a new password</h5>
 
                                 </div>
                                 <div class="mdc-layout-grid__inner mt-2 ">
@@ -49,21 +56,22 @@
                                     <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">
 
 
-                                        <form class="mt-2 py-5" id="loginForm">
+                                        <form class="mt-2 py-5" id="newPasswordForm">
+
                                             <div class="">
 
                                                 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
                                                     <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-                                                        <small><i class="material-icons mdc-text-field__icon mt-1">email</i></small>
-                                                        <input autocomplete="false" type="email" required
+                                                        <small><i class="material-icons mdc-text-field__icon mt-1">lock</i></small>
+                                                        <input autocomplete="false" type="password" required
                                                                class="mdc-text-field__input "
-                                                               name="email"
-                                                               id="email">
+                                                               name="password"
+                                                               id="password">
                                                         <div class="mdc-notched-outline">
                                                             <div class="mdc-notched-outline__leading"></div>
                                                             <div class="mdc-notched-outline__notch ">
                                                                 <label for="email"
-                                                                       class="mdc-floating-label">Email</label>
+                                                                       class="mdc-floating-label">New Password</label>
                                                             </div>
                                                             <div class="mdc-notched-outline__trailing"></div>
                                                         </div>
@@ -75,26 +83,27 @@
                                                         <i class="material-icons mdc-text-field__icon">lock</i>
                                                         <input autocomplete="off" type="password" required
                                                                class="mdc-text-field__input"
-                                                               id="password" name="password"/>
+                                                               id="confirm_password" name="confirm_password"/>
                                                         <div class="mdc-notched-outline">
                                                             <div class="mdc-notched-outline__leading"></div>
                                                             <div class="mdc-notched-outline__notch">
                                                                 <label for="password"
-                                                                       class="mdc-floating-label">Password</label>
+                                                                       class="mdc-floating-label">Confirm
+                                                                    Password</label>
                                                             </div>
                                                             <div class="mdc-notched-outline__trailing"></div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" id="password_reset_email"
+                                                       name="password_reset_email"
+                                                       value="<?= $_SESSION['email_reset'] ?>" required/>
+                                            </div>
 
-                                            </div>
-                                            <div class="mt-3 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop d-flex align-items-center justify-content-end">
-                                                <a href="forget.php">Forgot Password?</a>
-                                            </div>
                                             <div class="mt-2 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                                                 <button id="loginBtn" type="submit"
                                                         class="mdc-button mdc-button--raised w-100">
-                                                    Login
+                                                    Reset
                                                 </button>
                                             </div>
                                         </form>
@@ -131,6 +140,69 @@
 <script src="../assets/js/js.js"></script>
 <script>
 
+    //login
+    $("#newPasswordForm").on('submit', function (e) {
+        var form_data = $(this).serialize();
+
+        var email = $("#email_reset").val();
+        var password = $("#password").val();
+        var confirm_password = $("#confirm_password").val();
+        if (password === confirm_password) {
+            if (email !== '' && password !== '') {
+
+                $("#loginBtn").html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Checking...</span></div></div>');
+                $.ajax({ //make ajax request to cart_process.php
+                    url: "process/forget.php",
+                    type: "POST",
+                    //dataType:"json", //expect json value from server
+                    data: form_data
+                }).done(function (dataResult) { //on Ajax success
+                        console.log(dataResult)
+                        $("#loginBtn").html('Reset');
+                        var data = JSON.parse(dataResult);
+                        if (data.code == 1) {
+                            Swal.fire(
+                                'Success!',
+                                data.msg,
+                                'success'
+                            )
+                            setTimeout(function () {
+                                window.location = "login.php";
+                            }, 1000);
+                        } else if (data.code == 2) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.msg,
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "Unknown error occurred!",
+                            })
+                        }
+
+                    }
+                );
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Empty fields!"
+                })
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "Password and confirm password do not match!"
+            })
+        }
+
+        e.preventDefault();
+    });
 
     // });
 </script>

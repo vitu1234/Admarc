@@ -36,6 +36,30 @@ $users = $operation->retrieveMany("SELECT *FROM users WHERE user_id <> '$user_id
                             <div class="mdc-card p-0">
                                 <h6 class="card-title card-padding pb-0 text-center">USERS</h6>
 
+                                <div class="mdc-layout-grid " style="width: 100%;">
+                                    <div class="mdc-layout-grid__inner">
+                                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12 ">
+
+
+
+                                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-10  "
+                                                 style="width: 100%;">
+                                                <a href="./dom/index.php?users=3" type="button"
+                                                   class="mdc-button mdc-button--outlined material-icons mx-2">
+                                                    <div class="mdc-icon-button__ripple"></div>
+                                                    picture_as_pdf
+                                                </a>
+
+                                                <!--                                                <button type="button"-->
+                                                <!--                                                        class="mdc-button mdc-button--outlined material-icons mx-2 ">-->
+                                                <!--                                                    <span class="mdi mdi-file-excel"></span>-->
+                                                <!---->
+                                                <!--                                                </button>-->
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="mdc-layout-grid " style="width: 100%;">
                                     <div class="mdc-layout-grid__inner">

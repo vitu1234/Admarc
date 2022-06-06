@@ -382,6 +382,128 @@ if (isset($_GET['admarc_sales'])) {
 
     ';
 
+}elseif (isset($_GET['users'])) {
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../login.php');
+    }
+    $logged_user = $_SESSION['user'];
+    $user_id = $logged_user['user_id'];
+    $users = $operation->retrieveMany("SELECT *FROM users WHERE user_id <> '$user_id'");
+    $tbl = '';
+
+//    echo '<pre>';
+//    print_r($products);
+//    echo '</pre>';
+//    return;
+
+    foreach ($users as $user) {
+        $status = '';
+        if ($user['account_status'] == 1) {
+            $status = '<i class="text-success">Active</i>';
+        } else {
+            $status = '<i class="text-danger">Inactive</i>';
+
+        }
+        $tbl.= '<tr style="text-align: center;">
+                                                        <td class="text-left">' . $user['fname'] . ' ' . $user['lname'] . '</td>
+                                                        <td class="text-left ">' . $user['email'] . '</td>
+                                                        <td class="text-left ">' . $user['user_role'] . '</td>
+                                                        <td class="text-left ">' . $status . '</td>
+                                                        <td>
+                                                       
+                                                        </td>
+                                                    </tr>';
+
+    }
+
+    $html_body = '
+      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+         <div class="bg-light shadow-sm rounded py-4 mb-4">
+                                <h6 class="text-2 text-center font-weight-400 d-flex align-items-center px-4 mb-3">USERS - ' . date('d M Y H:i') . '</h6>
+
+
+                               
+
+                                <div class="table-responsive">
+                                    <table class="table " style="width: 100%; border: 1px solid black;">
+                                        <thead style="background-color:black;color:#fff;">
+                                        <tr class="bg-light ">
+                                             <th class="text-left "><b>Fullname</b></th>
+                                            <th class="text-left "><b>Email</b></th>
+                                            <th class="text-left "><b>Role</b></th>
+                                            <th class="text-left "><b>Status</b></th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            ' . $tbl . '
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+    ';
+
+}elseif (isset($_GET['branches'])) {
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ../login.php');
+    }
+    $logged_user = $_SESSION['user'];
+    $user_id = $logged_user['user_id'];
+    $branches = $operation->retrieveMany("SELECT *FROM branch");
+    $tbl = '';
+
+//    echo '<pre>';
+//    print_r($products);
+//    echo '</pre>';
+//    return;
+
+    foreach ($branches as $branch) {
+
+        $tbl .= '<tr style="text-align: center;">
+                                                        <td class="text-left">' . $branch['branch_name'] . '</td>
+                                                        <td class="text-left ">' . $branch['branch_phone'] . '</td>
+                                                      
+                                                        
+                                                    </tr>';
+
+    }
+
+    $html_body = '
+      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+         <div class="bg-light shadow-sm rounded py-4 mb-4">
+                                <h6 class="text-2 text-center font-weight-400 d-flex align-items-center px-4 mb-3">BRANCHES - ' . date('d M Y H:i') . '</h6>
+
+
+                               
+
+                                <div class="table-responsive">
+                                    <table class="table " style="width: 100%; border: 1px solid black;">
+                                        <thead style="background-color:black;color:#fff;">
+                                        <tr class="bg-light ">
+                                              <th class="text-left "><b>Branch Name</b></th>
+                                            <th class="text-left "><b>Phone</b></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            ' . $tbl . '
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+    ';
+
 }
 
 

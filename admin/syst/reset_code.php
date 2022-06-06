@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['email_reset'])) {
+    header('Location: forget.php?error=Enter email first');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +48,8 @@
                                     <!--                                    <h4 class="card-title mb-0 ">LOGIN</h4>-->
                                 </div>
                                 <div class="d-block d-sm-flex justify-content-center align-items-center">
-                                    <h5 class="card-sub-title mb-2 mb-sm-0">Login to access your dashboard</h5>
+                                    <h5 class="card-sub-title mb-2 mb-sm-0">Enter Reset code you received via email to
+                                        verify</h5>
 
                                 </div>
                                 <div class="mdc-layout-grid__inner mt-2 ">
@@ -49,52 +57,37 @@
                                     <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-8-tablet">
 
 
-                                        <form class="mt-2 py-5" id="loginForm">
+                                        <form class="mt-2 py-5" id="verifyCodeForm">
+
                                             <div class="">
 
                                                 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
                                                     <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-                                                        <small><i class="material-icons mdc-text-field__icon mt-1">email</i></small>
-                                                        <input autocomplete="false" type="email" required
+                                                        <small><i class="material-icons mdc-text-field__icon mt-1">lock</i></small>
+                                                        <input autocomplete="false" type="text" maxlength="4" minlength="4" required
                                                                class="mdc-text-field__input "
-                                                               name="email"
-                                                               id="email">
+                                                               name="reset_code"
+                                                               id="reset_code">
                                                         <div class="mdc-notched-outline">
                                                             <div class="mdc-notched-outline__leading"></div>
                                                             <div class="mdc-notched-outline__notch ">
                                                                 <label for="email"
-                                                                       class="mdc-floating-label">Email</label>
+                                                                       class="mdc-floating-label">Reset Code</label>
                                                             </div>
                                                             <div class="mdc-notched-outline__trailing"></div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="mt-3 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
-                                                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-                                                        <i class="material-icons mdc-text-field__icon">lock</i>
-                                                        <input autocomplete="off" type="password" required
-                                                               class="mdc-text-field__input"
-                                                               id="password" name="password"/>
-                                                        <div class="mdc-notched-outline">
-                                                            <div class="mdc-notched-outline__leading"></div>
-                                                            <div class="mdc-notched-outline__notch">
-                                                                <label for="password"
-                                                                       class="mdc-floating-label">Password</label>
-                                                            </div>
-                                                            <div class="mdc-notched-outline__trailing"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <input type="hidden" name="reset_email" id="reset_email" required
+                                                       value="<?= $_SESSION['email_reset'] ?>"/>
 
                                             </div>
-                                            <div class="mt-3 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop d-flex align-items-center justify-content-end">
-                                                <a href="forget.php">Forgot Password?</a>
-                                            </div>
+
                                             <div class="mt-2 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                                                 <button id="loginBtn" type="submit"
                                                         class="mdc-button mdc-button--raised w-100">
-                                                    Login
+                                                    Verify Reset Code
                                                 </button>
                                             </div>
                                         </form>
@@ -131,6 +124,59 @@
 <script src="../assets/js/js.js"></script>
 <script>
 
+    //login
+    $("#verifyCodeForm").on('submit', function (e) {
+        var form_data = $(this).serialize();
+
+        var email = $("#reset_email").val();
+        var code = $("#reset_code").val();
+        if (email !== '' && code !== '') {
+
+            $("#loginBtn").html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Checking...</span></div></div>');
+            $.ajax({ //make ajax request to cart_process.php
+                url: "process/forget.php",
+                type: "POST",
+                //dataType:"json", //expect json value from server
+                data: form_data
+            }).done(function (dataResult) { //on Ajax success
+                    console.log(dataResult)
+                    $("#loginBtn").html('Verify Reset Code');
+                    var data = JSON.parse(dataResult);
+                    if (data.code == 1) {
+                        Swal.fire(
+                            'Success!',
+                            data.msg,
+                            'success'
+                        )
+                        setTimeout(function () {
+                            window.location = "reset_password.php";
+                        }, 1000);
+                    } else if (data.code == 2) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.msg,
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "Unknown error occurred!",
+                        })
+                    }
+
+                }
+            );
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "Empty fields!"
+            })
+        }
+        e.preventDefault();
+    });
 
     // });
 </script>
