@@ -11,6 +11,7 @@ $logged_user = $_SESSION['user'];
 //print_r($_SESSION);
 //echo "</pre>";
 $user_role = $_SESSION['user']['user_role'];
+$uid = $_SESSION['user']['user_id'];
 
 $year = date('Y');
 $html = '';
@@ -240,7 +241,140 @@ GROUP BY product_categories.category_name,category_name ORDER BY admarc_products
             </main>
     ';
 } else {
-    $html = '<h3 class="alert alert-warning py-3 text-center">Dashboard under construction!</h3>';
+
+    $all_users = $operation->countAll('SELECT *FROM users');
+    $all_sales_by_year = $operation->retrieveSingle("SELECT SUM(multilplied) AS total FROM (SELECT (qty_obtained*buying_price) AS multilplied FROM `admarc_products` WHERE YEAR(date_created) = '$year') S; ");
+
+    $count_admarc_products = $operation->countAll("SELECT * FROM `products` WHERE YEAR(date_created) = '$year' AND user_id = '$uid'");
+    $count_admarc_sales = $operation->countAll("SELECT * FROM `admarc_products` WHERE YEAR(date_created) = '$year' AND from_user = '$uid'");
+
+    $yearSales = $operation->retrieveMany('SELECT 
+                                CASE 
+                                    WHEN (MONTH(date_created) = 1) 
+                                        THEN "Jan" 
+                                    WHEN (MONTH(date_created) = 2) 
+                                        THEN "Feb" 
+                                    WHEN (MONTH(date_created) = 3) 
+                                        THEN "Mar" 
+                                    WHEN (MONTH(date_created) = 4) 
+                                        THEN "Apr" 
+                                    WHEN (MONTH(date_created) = 5) 
+                                        THEN "May" 
+                                    WHEN (MONTH(date_created) = 6) 
+                                        THEN "Jun" 
+                                    WHEN (MONTH(date_created) = 7) 
+                                        THEN "Jul" 
+                                    WHEN (MONTH(date_created) = 8) 
+                                        THEN "Aug" 
+                                    WHEN (MONTH(date_created) = 9) 
+                                        THEN "Sep" 
+                                    WHEN (MONTH(date_created) = 10) 
+                                        THEN "Oct" 
+                                    WHEN (MONTH(date_created) = 11) 
+                                        THEN "Nov" 
+                                    WHEN (MONTH(date_created) = 12) 
+                                        THEN "Dec" 
+                                    ELSE "" END 
+                                AS month_name, MONTH(date_created) month_number, COUNT(*) record_count 
+                                FROM admarc_products 
+                                WHERE YEAR(date_created)="' . $year . '" 
+                                AND from_user="' . $uid . '" 
+                                GROUP BY MONTH(date_created),month_name;');
+
+    foreach ($yearSales as $sale) {
+        array_push($months, $sale['month_name']);
+        array_push($record_count, $sale['record_count']);
+    }
+
+
+    $table = '';
+    $i = 1;
+
+
+    $html = '
+        <main class="content-wrapper">
+                <div class="mdc-layout-grid">
+                    <div class="mdc-layout-grid__inner">
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-4-tablet">
+                            <div class="mdc-card info-card info-card--success">
+                                <div class="card-inner">
+                                    <h5 class="card-title"><small><?= $year ?> </small>Products</h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">' . $count_admarc_products . '</h5>
+                                    <!--                                    <p class="tx-12 text-muted">48% target reached</p>-->
+                                    <div class="card-icon-wrapper">
+                                        <i class="material-icons">dvr</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-4-tablet">
+                            <div class="mdc-card info-card info-card--danger">
+                                <div class="card-inner">
+                                    <h5 class="card-title"><small>' . $year . '</small> Annual Sales </h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">
+                                        K' . number_format($all_sales_by_year['total'], 2) . '</h5>
+                                    <!--                                    <p class="tx-12 text-muted">55% target reached</p>-->
+                                    <div class="card-icon-wrapper">
+                                        <small class="text-light">MWK</small>
+                                        <!--                                        <i class="material-icons ">MWK</i>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-4-tablet">
+                            <div class="mdc-card info-card info-card--primary">
+                                <div class="card-inner">
+                                    <h5 class="card-title"><small>' . $year . ' Annual Sales </small></h5>
+                                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">' . $count_admarc_sales . '</h5>
+                                    <!--                                    <p class="tx-12 text-muted">87% target reached</p>-->
+                                    <div class="card-icon-wrapper">
+                                        <i class="material-icons">trending_up</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                       
+
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                            <div class="mdc-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="card-title mb-2 mb-sm-0">Sales Overview in year <?= $year ?></h4>
+                                    <div class="d-flex justtify-content-between align-items-center">
+                                        <!--                                        <p class="d-none d-sm-block text-muted tx-12 mb-0 mr-2">Goal reached</p>-->
+                                        <!--                                        <i class="material-icons options-icon">more_vert</i>-->
+                                    </div>
+                                </div>
+                                <div class="d-block d-sm-flex justify-content-between align-items-center">
+                                    <!--                                    <h6 class="card-sub-title mb-0">Sales performance revenue based by country</h6>-->
+
+                                </div>
+                                <div class="chart-container mt-4">
+                                    <canvas id="revenue-chart" height="260"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-8-tablet">-->
+                        <!--                            <div class="mdc-card">-->
+                        <!--                                <div class="d-flex d-lg-block d-xl-flex justify-content-between">-->
+                        <!--                                    <div>-->
+                        <!--                                        <h4 class="card-title">Order Statistics</h4>-->
+                        <!--                                        <h6 class="card-sub-title">Customers 58.39k</h6>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div id="sales-legend" class="d-flex flex-wrap"></div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="chart-container mt-4">-->
+                        <!--                                    <canvas id="chart-sales" height="260"></canvas>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                    </div>
+                </div>
+            </main>
+    ';
+
+
+
 }
 
 ?>

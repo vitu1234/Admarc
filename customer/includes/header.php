@@ -41,6 +41,8 @@ if (isset($_SESSION['cart_customer'])) {
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../admin/assets/datatable/datatables.min.css">
+
 </head>
 <body class="goto-here">
 <div class="py-1 bg-primary">

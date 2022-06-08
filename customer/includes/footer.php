@@ -126,6 +126,8 @@
 <script src="js/google-map.js"></script>
 <script src="js/main.js"></script>
 <script src="js/js.js"></script>
+<script src="../admin/assets/datatable/datatables.min.js"></script>
+
 
 </body>
 </html>
