@@ -9,7 +9,7 @@ include('connection/Functions.php');
 $operation = new Functions();
 $logged_user = $_SESSION['user'];
 $user_id = $logged_user['user_id'];
-$products = $operation->retrieveMany("SELECT *FROM admarc_sales JOIN users ON admarc_sales.user_id = users.user_id");
+$products = $operation->retrieveMany("SELECT *FROM admarc_sales JOIN users ON admarc_sales.user_id = users.user_id ORDER BY sale_id DESC");
 
 
 ?>

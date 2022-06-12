@@ -107,7 +107,7 @@ if (isset($_POST['phone']) && isset($_POST['payment_type']) && isset($_POST['fna
             }
         }
     } else {
-        $status = 1;
+        $status = 0;
     }
 
     $tbl = 'admarc_sales';

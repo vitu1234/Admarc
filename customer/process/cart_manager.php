@@ -19,7 +19,7 @@ if (isset($_POST['add_id']) && isset($_POST['qty']) && isset($_POST['product_nam
         'prod_id' => $prod_id,
         'qty' => $qty,
         'product_name' => $product_name,
-        'price' => ($price * $qty)
+        'price' => ($price )
     );
     if (isset($_SESSION['cart_customer']) && !empty($_SESSION['cart_customer'])) {
         if (isset($_SESSION['cart_customer'][$prod_id])) {

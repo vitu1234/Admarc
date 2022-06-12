@@ -55,17 +55,18 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
 
                                             <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-10  "
                                                  style="width: 100%;">
-                                                <a href="./dom/index.php?admarc_sale_details=<?=$sale_id?>" type="button"
-                                                        class="mdc-button mdc-button--outlined material-icons mx-2">
+                                                <a href="./dom/index.php?admarc_sale_details=<?= $sale_id ?>"
+                                                   type="button"
+                                                   class="mdc-button mdc-button--outlined material-icons mx-2">
                                                     <div class="mdc-icon-button__ripple"></div>
                                                     picture_as_pdf
                                                 </a>
 
-<!--                                                <button type="button"-->
-<!--                                                        class="mdc-button mdc-button--outlined material-icons mx-2 ">-->
-<!--                                                    <span class="mdi mdi-file-excel"></span>-->
-<!---->
-<!--                                                </button>-->
+                                                <!--                                                <button type="button"-->
+                                                <!--                                                        class="mdc-button mdc-button--outlined material-icons mx-2 ">-->
+                                                <!--                                                    <span class="mdi mdi-file-excel"></span>-->
+                                                <!---->
+                                                <!--                                                </button>-->
                                             </div>
 
                                         </div>
@@ -79,7 +80,7 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
                                              style="width: 100%;">
 
                                             <?php
-                                            $img = ($sale['payment_type'] != 'Cash') ? '<img src="../assets/images/payment/' . $sale['payment_screenshot'] . '" class="rounded-3 m-4" height="200px" width="200px"/><br><br>' : '';
+                                            $img = ($sale['payment_type'] == 'Airtel Money | TNM Mpamba') ? '<img src="../assets/images/payment/' . $sale['payment_screenshot'] . '" class="rounded-3 m-4" height="200px" width="200px"/><br><br>' : '';
                                             echo $img;
                                             ?>
 
@@ -155,7 +156,7 @@ $products_bought = $operation->retrieveMany("SELECT * FROM `admarc_sale_details`
                                                         <td class="text-left"><b>' . $product['product_name'] . '</b> - <small>' . $category['category_name'] . '</small></td>
                                                         <td class="text-left">' . number_format($product['selling_price'], 2) . '</td>
                                                         <td class="text-left ">' . $product['qty'] . '</td>
-                                                        <td class="text-left ">' . number_format($product['selling_price'], 2) . '</td>
+                                                        <td class="text-left ">' . number_format($product['selling_price'] * $product['qty'], 2) . '</td>
                                                        
                                                     </tr>';
 
