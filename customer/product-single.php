@@ -93,13 +93,16 @@ $products = $operation->retrieveMany(
 	                     <i class="ion-ios-add"></i>
 	                 </button>
 	             	</span>
+                        <input type="hidden" value="<?= $product['qty_remaining'] ?>" id="maxProd"/>
                     </div>
                     <div class="w-100"></div>
                     <div class="col-md-12">
                         <p style="color: #000;"><?= $product['qty_remaining'] ?> available</p>
                     </div>
                 </div>
-                <p><a href="#"  onclick="addToCart('<?= $product['product_id'] ?>', '<?= $product['product_name'] ?>', '<?= $product['selling_price'] ?>', 'input')" class="btn btn-black py-3 px-5 buy-now">Add to Cart</a></p>
+                <p><a href="#"
+                      onclick="addToCart('<?= $product['product_id'] ?>', '<?= $product['product_name'] ?>', '<?= $product['selling_price'] ?>', 'input')"
+                      class="btn btn-black py-3 px-5 buy-now">Add to Cart</a></p>
             </div>
         </div>
     </div>
@@ -214,10 +217,15 @@ include('includes/footer.php');
             e.preventDefault();
             // Get the field name
             var quantity = parseInt($('#quantity').val());
+            var maxProd = parseInt($('#maxProd').val());
 
-            // If is not undefined
+            if ((quantity + 1) <= maxProd) {
 
-            $('#quantity').val(quantity + 1);
+                // If is not undefined
+                $('#quantity').val(quantity + 1);
+            } else {
+                // alert('bigg')
+            }
 
 
             // Increment
@@ -233,7 +241,7 @@ include('includes/footer.php');
             // If is not undefined
 
             // Increment
-            if (quantity > 0) {
+            if (quantity > 1) {
                 $('#quantity').val(quantity - 1);
             }
         });
