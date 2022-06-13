@@ -22,7 +22,7 @@ $record_count = array();
 
 if ($user_role == 'admin' || $user_role == 'stock_manager') {
     $all_users = $operation->countAll('SELECT *FROM users');
-    $all_sales_by_year = $operation->retrieveSingle("SELECT SUM(multilplied) AS total FROM (SELECT (qty*prod_total) AS multilplied FROM `admarc_sale_details` WHERE YEAR(date_created) = '$year') S; ");
+    $all_sales_by_year = $operation->retrieveSingle("SELECT SUM(multilplied) AS total FROM (SELECT (prod_total) AS multilplied FROM `admarc_sale_details` WHERE YEAR(date_created) = '$year') S; ");
 
     $product_categories = $operation->retrieveMany("SELECT 
 	product_categories.category_id,category_name, COUNT(admarc_products.product_id) AS products
